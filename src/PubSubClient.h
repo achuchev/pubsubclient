@@ -1,7 +1,5 @@
 /*
  PubSubClient.h - A simple client for MQTT.
-  Nick O'Leary
-  http://knolleary.net
 */
 
 #ifndef PubSubClient_h
@@ -99,6 +97,7 @@ private:
    uint16_t port;
    Stream* stream;
    int _state;
+   uint32_t _socketTimeout;
 public:
    PubSubClient();
    PubSubClient(Client& client);
@@ -121,6 +120,7 @@ public:
    PubSubClient& setCallback(MQTT_CALLBACK_SIGNATURE);
    PubSubClient& setClient(Client& client);
    PubSubClient& setStream(Stream& stream);
+   PubSubClient& setSocketTimeout(uint32_t timeout);
 
    boolean connect(const char* id, boolean cleanSession=true);
    boolean connect(const char* id, const char* user, const char* pass, boolean cleanSession=true);

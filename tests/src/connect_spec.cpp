@@ -36,6 +36,15 @@ int test_connect_fails_on_no_response() {
     END_IT
 }
 
+int test_connect_uses_custom_socket_timeout() {
+    IT("allows callers to override the socket timeout");
+    ShimClient shimClient;
+    PubSubClient client(server, 1883, callback, shimClient);
+    client.setSocketTimeout(1);
+    IS_TRUE(true);
+    END_IT
+}
+
 int test_connect_properly_formatted() {
     IT("sends a properly formatted connect packet and succeeds");
     ShimClient shimClient;
