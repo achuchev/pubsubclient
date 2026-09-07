@@ -62,6 +62,7 @@ void setup()
 
   client.setServer(server, 1883);
   client.setCallback(callback);
+  client.setBufferSize(1024);
 
   Ethernet.begin(mac, ip);
   // Allow the hardware to sort itself out

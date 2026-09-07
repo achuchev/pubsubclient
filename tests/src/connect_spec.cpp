@@ -45,6 +45,15 @@ int test_connect_uses_custom_socket_timeout() {
     END_IT
 }
 
+int test_connect_uses_custom_buffer_size() {
+    IT("allows callers to override the packet buffer size");
+    ShimClient shimClient;
+    PubSubClient client(server, 1883, callback, shimClient);
+    client.setBufferSize(1024);
+    IS_TRUE(client.state() == MQTT_DISCONNECTED);
+    END_IT
+}
+
 int test_connect_properly_formatted() {
     IT("sends a properly formatted connect packet and succeeds");
     ShimClient shimClient;

@@ -81,7 +81,8 @@
 class PubSubClient {
 private:
    Client* _client;
-   uint8_t buffer[MQTT_MAX_PACKET_SIZE];
+   uint8_t* buffer;
+   uint16_t bufferSize;
    uint16_t nextMsgId;
    unsigned long lastOutActivity;
    unsigned long lastInActivity;
@@ -100,6 +101,7 @@ private:
    uint32_t _socketTimeout;
 public:
    PubSubClient();
+   ~PubSubClient();
    PubSubClient(Client& client);
    PubSubClient(IPAddress, uint16_t, Client& client);
    PubSubClient(IPAddress, uint16_t, Client& client, Stream&);
@@ -120,6 +122,7 @@ public:
    PubSubClient& setCallback(MQTT_CALLBACK_SIGNATURE);
    PubSubClient& setClient(Client& client);
    PubSubClient& setStream(Stream& stream);
+   PubSubClient& setBufferSize(uint16_t size);
    PubSubClient& setSocketTimeout(uint32_t timeout);
 
    boolean connect(const char* id, boolean cleanSession=true);
@@ -128,9 +131,9 @@ public:
    boolean connect(const char* id, const char* user, const char* pass, const char* willTopic, uint8_t willQos, boolean willRetain, const char* willMessage, boolean cleanSession=true);
    void disconnect();
    boolean publish(const char* topic, const char* payload, boolean retained=false);
-   boolean publish(const char* topic, const char* payload, uint8_t qos, boolean retained=false);
+   boolean publish(const char* topic, const char* payload, uint8_t qos, boolean retained);
    boolean publish(const char* topic, const uint8_t * payload, unsigned int plength, boolean retained=false);
-   boolean publish(const char* topic, const uint8_t * payload, unsigned int plength, uint8_t qos, boolean retained=false);
+   boolean publish(const char* topic, const uint8_t * payload, unsigned int plength, uint8_t qos, boolean retained);
    boolean publish_P(const char* topic, const uint8_t * payload, unsigned int plength, boolean retained=false);
    boolean subscribe(const char* topic);
    boolean subscribe(const char* topic, uint8_t qos);

@@ -10,12 +10,20 @@ PubSubClient::PubSubClient() {
     this->_client = NULL;
     this->stream = NULL;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setCallback(NULL);
+}
+
+PubSubClient::~PubSubClient() {
+    delete[] this->buffer;
 }
 
 PubSubClient::PubSubClient(Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setClient(client);
     this->stream = NULL;
 }
@@ -23,6 +31,8 @@ PubSubClient::PubSubClient(Client& client) {
 PubSubClient::PubSubClient(IPAddress addr, uint16_t port, Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(addr, port);
     setClient(client);
     this->stream = NULL;
@@ -30,6 +40,8 @@ PubSubClient::PubSubClient(IPAddress addr, uint16_t port, Client& client) {
 PubSubClient::PubSubClient(IPAddress addr, uint16_t port, Client& client, Stream& stream) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(addr,port);
     setClient(client);
     setStream(stream);
@@ -37,6 +49,8 @@ PubSubClient::PubSubClient(IPAddress addr, uint16_t port, Client& client, Stream
 PubSubClient::PubSubClient(IPAddress addr, uint16_t port, MQTT_CALLBACK_SIGNATURE, Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(addr, port);
     setCallback(callback);
     setClient(client);
@@ -45,6 +59,8 @@ PubSubClient::PubSubClient(IPAddress addr, uint16_t port, MQTT_CALLBACK_SIGNATUR
 PubSubClient::PubSubClient(IPAddress addr, uint16_t port, MQTT_CALLBACK_SIGNATURE, Client& client, Stream& stream) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(addr,port);
     setCallback(callback);
     setClient(client);
@@ -54,6 +70,8 @@ PubSubClient::PubSubClient(IPAddress addr, uint16_t port, MQTT_CALLBACK_SIGNATUR
 PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(ip, port);
     setClient(client);
     this->stream = NULL;
@@ -61,6 +79,8 @@ PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, Client& client) {
 PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, Client& client, Stream& stream) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(ip,port);
     setClient(client);
     setStream(stream);
@@ -68,6 +88,8 @@ PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, Client& client, Stream& s
 PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, MQTT_CALLBACK_SIGNATURE, Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(ip, port);
     setCallback(callback);
     setClient(client);
@@ -76,6 +98,8 @@ PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, MQTT_CALLBACK_SIGNATURE, 
 PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, MQTT_CALLBACK_SIGNATURE, Client& client, Stream& stream) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(ip,port);
     setCallback(callback);
     setClient(client);
@@ -85,6 +109,8 @@ PubSubClient::PubSubClient(uint8_t *ip, uint16_t port, MQTT_CALLBACK_SIGNATURE, 
 PubSubClient::PubSubClient(const char* domain, uint16_t port, Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(domain,port);
     setClient(client);
     this->stream = NULL;
@@ -92,6 +118,8 @@ PubSubClient::PubSubClient(const char* domain, uint16_t port, Client& client) {
 PubSubClient::PubSubClient(const char* domain, uint16_t port, Client& client, Stream& stream) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(domain,port);
     setClient(client);
     setStream(stream);
@@ -99,6 +127,8 @@ PubSubClient::PubSubClient(const char* domain, uint16_t port, Client& client, St
 PubSubClient::PubSubClient(const char* domain, uint16_t port, MQTT_CALLBACK_SIGNATURE, Client& client) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(domain,port);
     setCallback(callback);
     setClient(client);
@@ -107,6 +137,8 @@ PubSubClient::PubSubClient(const char* domain, uint16_t port, MQTT_CALLBACK_SIGN
 PubSubClient::PubSubClient(const char* domain, uint16_t port, MQTT_CALLBACK_SIGNATURE, Client& client, Stream& stream) {
     this->_state = MQTT_DISCONNECTED;
     this->_socketTimeout = MQTT_SOCKET_TIMEOUT;
+    this->buffer = new uint8_t[MQTT_MAX_PACKET_SIZE];
+    this->bufferSize = MQTT_MAX_PACKET_SIZE;
     setServer(domain,port);
     setCallback(callback);
     setClient(client);
@@ -278,13 +310,13 @@ uint16_t PubSubClient::readPacket(uint8_t* lengthLength) {
                 this->stream->write(digit);
             }
         }
-        if (len < MQTT_MAX_PACKET_SIZE) {
+        if (len < bufferSize) {
             buffer[len] = digit;
         }
         len++;
     }
 
-    if (!this->stream && len > MQTT_MAX_PACKET_SIZE) {
+    if (!this->stream && len > bufferSize) {
         len = 0; // This will cause the packet to be ignored.
     }
 
@@ -362,9 +394,13 @@ boolean PubSubClient::publish(const char* topic, const char* payload, uint8_t qo
     return publish(topic,(const uint8_t*)payload,strlen(payload),qos,retained);
 }
 
+boolean PubSubClient::publish(const char* topic, const uint8_t* payload, unsigned int plength, boolean retained) {
+    return publish(topic, payload, plength, 0, retained);
+}
+
 boolean PubSubClient::publish(const char* topic, const uint8_t* payload, unsigned int plength, uint8_t qos, boolean retained) {
     if (connected()) {
-        if (MQTT_MAX_PACKET_SIZE < 5 + 2+strlen(topic) + plength) {
+        if (bufferSize < 5 + 2+strlen(topic) + plength) {
             // Too long
             return false;
         }
@@ -490,7 +526,7 @@ boolean PubSubClient::subscribe(const char* topic, uint8_t qos) {
     if (qos < 0 || qos > 1) {
         return false;
     }
-    if (MQTT_MAX_PACKET_SIZE < 9 + strlen(topic)) {
+    if (bufferSize < 9 + strlen(topic)) {
         // Too long
         return false;
     }
@@ -511,7 +547,7 @@ boolean PubSubClient::subscribe(const char* topic, uint8_t qos) {
 }
 
 boolean PubSubClient::unsubscribe(const char* topic) {
-    if (MQTT_MAX_PACKET_SIZE < 9 + strlen(topic)) {
+    if (bufferSize < 9 + strlen(topic)) {
         // Too long
         return false;
     }
@@ -599,6 +635,20 @@ PubSubClient& PubSubClient::setClient(Client& client){
 
 PubSubClient& PubSubClient::setStream(Stream& stream){
     this->stream = &stream;
+    return *this;
+}
+
+PubSubClient& PubSubClient::setBufferSize(uint16_t size) {
+    if (size == 0) {
+        return *this;
+    }
+
+    uint8_t* newBuffer = new uint8_t[size];
+    if (newBuffer != NULL) {
+        delete[] this->buffer;
+        this->buffer = newBuffer;
+        this->bufferSize = size;
+    }
     return *this;
 }
 
